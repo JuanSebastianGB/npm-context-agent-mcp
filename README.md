@@ -138,7 +138,7 @@ Get dependencies and devDependencies for a package.
 
 ```json
 {
-列名 "packageName": "@types/node",
+  "packageName": "@types/node",
   "version": "24.0.0"
 }
 ```
