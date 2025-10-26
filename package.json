@@ -1,0 +1,42 @@
+{
+  "type": "module",
+  "bin": {
+    "npm-context-agent-mcp": "./build/index.js"
+  },
+  "name": "npm-context-agent-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for fetching npm package metadata and README files from GitHub",
+  "main": "index.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && chmod +x build/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "npm",
+    "package",
+    "readme",
+    "github",
+    "context-agent",
+    "ai",
+    "llm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
