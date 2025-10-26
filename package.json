@@ -24,10 +24,19 @@
     "github",
     "context-agent",
     "ai",
-    "llm"
+    "llm",
+    "dependencies",
+    "versions",
+    "search",
+    "download-stats"
   ],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.20.2",
