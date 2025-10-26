@@ -4,16 +4,24 @@ A Model Context Protocol (MCP) server that provides comprehensive contextual inf
 
 ## 🚀 Features
 
-- **Fetch npm package metadata** - Get detailed information about any npm package
-- **Retrieve README files** - Automatically fetches README from GitHub repositories with smart branch fallback
-- **Search packages** - Search npm registry by keyword
-- **Version history** - Get all available versions of a package
-- **Dependencies info** - View dependencies, devDependencies, and peerDependencies
-- **Download statistics** - Track package download trends
-- **Type-safe validation** - Uses Zod for runtime schema validation
-- **Scoped package support** - Handles scoped packages like `@types/node`
-- **Error handling** - Graceful error handling with detailed error messages
-- **Zero dependencies** - Lightweight implementation using native fetch API
+### Core Capabilities
+
+- **📦 Package Metadata** - Get detailed information about any npm package
+- **📖 README Files** - Automatically fetches README from GitHub repositories with smart branch fallback
+- **🔍 Package Search** - Search npm registry by keyword with customizable result limits
+- **📋 Version History** - Get all available versions of a package with dist tags
+- **🔗 Dependencies Info** - View dependencies, devDependencies, and peerDependencies
+- **📊 Download Statistics** - Track package download trends (last day, week, or month)
+- **ℹ️ Comprehensive Info** - Get full package metadata including keywords, license, maintainers
+
+### Technical Features
+
+- **🛡️ Type-safe validation** - Uses Zod for runtime schema validation
+- **🏷️ Scoped package support** - Handles scoped packages like `@types/node`
+- **🎯 Version support** - Fetch specific package versions for all operations
+- **⚡ Smart branch fallback** - Automatically tries main → master → default branches
+- **🔄 Error handling** - Graceful error handling with detailed error messages
+- **🚀 Zero dependencies** - Lightweight implementation using native fetch API
 
 ## 📋 Requirements
 
@@ -56,7 +64,48 @@ Add to your MCP configuration:
 }
 ```
 
+### Quick Start Examples
+
+**Get README for a package:**
+
+```json
+{ "packageName": "react" }
+```
+
+**Search for packages:**
+
+```json
+{ "query": "state management", "limit": 5 }
+```
+
+**Get all versions:**
+
+```json
+{ "packageName": "svelte" }
+```
+
+**Get dependencies:**
+
+```json
+{ "packageName": "@types/node", "version": "24.0.0" }
+```
+
+**Check download stats:**
+
+```json
+{ "packageName": "lodash", "period": "last-week" }
+```
+
 ### Available Tools
+
+| Tool                       | Description                    | Parameters                |
+| -------------------------- | ------------------------------ | ------------------------- |
+| `get_readme_data`          | Get package README from GitHub | `packageName`, `version?` |
+| `search_packages`          | Search npm packages by keyword | `query`, `limit?`         |
+| `get_package_versions`     | Get all versions of a package  | `packageName`             |
+| `get_package_dependencies` | Get package dependencies       | `packageName`, `version?` |
+| `get_download_stats`       | Get download statistics        | `packageName`, `period?`  |
+| `get_package_info`         | Get comprehensive package info | `packageName`, `version?` |
 
 #### `get_readme_data`
 
@@ -240,6 +289,13 @@ The server uses the `@modelcontextprotocol/sdk` to create a standardized MCP ser
 3. For README fetching: Extracts the GitHub repository URL and fetches README with branch fallback
 4. Returns formatted, structured data
 
+### API Endpoints Used
+
+- **npm Registry API**: `https://registry.npmjs.org/` - Package metadata, versions, dependencies
+- **npm Search API**: `https://registry.npmjs.org/-/v1/search` - Package search functionality
+- **npm Downloads API**: `https://api.npmjs.org/downloads/point/` - Download statistics
+- **GitHub Raw Content**: `https://raw.githubusercontent.com/` - README file fetching
+
 ### Data Flow
 
 ```
@@ -302,6 +358,25 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 - Regular packages: `lodash`, `express`, `react`
 - Scoped packages: `@types/node`, `@babel/core`, `@angular/core`
 - Specific versions: All endpoints support optional version parameters
+
+## 📝 Version History
+
+### Version 1.0.0 (Current)
+
+**Initial Release** - Complete npm context agent MCP server
+
+**Features:**
+
+- ✅ README fetching with branch fallback
+- ✅ Package search functionality
+- ✅ Version history retrieval
+- ✅ Dependencies analysis
+- ✅ Download statistics
+- ✅ Comprehensive package info
+- ✅ Scoped package support
+- ✅ Version-specific queries
+- ✅ Zod schema validation
+- ✅ Comprehensive error handling
 
 ## 🤝 Contributing
 
