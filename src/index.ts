@@ -112,25 +112,12 @@ const PackageSizeSchema = z.object({
   repository: z.string().optional(),
 });
 
-const SecurityAuditSchema = z.object({
-  vulnerabilities: z.object({
-    total: z.number(),
-    low: z.number(),
-    moderate: z.number(),
-    high: z.number(),
-    critical: z.number(),
-  }),
-  dependency: z.string(),
-});
-
 const QualityMetricsSchema = z.object({
-  score: z.object({
-    final: z.number(),
-    detail: z.object({
-      quality: z.number(),
-      popularity: z.number(),
-      maintenance: z.number(),
-    }),
+  final: z.number(),
+  detail: z.object({
+    quality: z.number(),
+    popularity: z.number(),
+    maintenance: z.number(),
   }),
   analyzedAt: z.string().optional(),
 });
@@ -929,130 +916,6 @@ server.registerTool(
   }
 );
 
-// Tool: Check security
-server.registerTool(
-  "check_security",
-  {
-    title: "Check Security Vulnerabilities",
-    description: "Check for known security vulnerabilities",
-    inputSchema: {
-      packageName: z.string(),
-      version: z.string().optional(),
-    },
-    outputSchema: {
-      package: z.string(),
-      version: z.string(),
-      vulnerabilities: z.object({
-        total: z.number(),
-        low: z.number(),
-        moderate: z.number(),
-        high: z.number(),
-        critical: z.number(),
-      }),
-    },
-  },
-  async ({ packageName, version }) => {
-    try {
-      const pkgInfo = await fetchPackageData(packageName, version);
-      const versionToCheck = pkgInfo.version || "latest";
-      const fullVersion = `${packageName}@${versionToCheck}`;
-
-      // Use npm registry advisory API
-      const response = await fetch(
-        `https://registry.npmjs.org/-/npm/v1/security/advisories/bulk`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ [fullVersion]: {} }),
-        }
-      );
-
-      if (!response.ok) {
-        // If bulk API doesn't work, return no vulnerabilities found
-        const output = {
-          package: packageName,
-          version: versionToCheck,
-          vulnerabilities: {
-            total: 0,
-            low: 0,
-            moderate: 0,
-            high: 0,
-            critical: 0,
-          },
-        };
-
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Package: ${packageName}@${versionToCheck}\n\nNo vulnerabilities found (advisory API not available)`,
-            },
-          ],
-          structuredContent: output,
-        };
-      }
-
-      const advisoryData = await response.json();
-      const vulnerabilities = {
-        total: 0,
-        low: 0,
-        moderate: 0,
-        high: 0,
-        critical: 0,
-      };
-
-      // Count vulnerabilities by severity
-      if (advisoryData && typeof advisoryData === "object") {
-        for (const adv of Object.values(advisoryData) as any[]) {
-          if (Array.isArray(adv)) {
-            for (const item of adv) {
-              vulnerabilities.total++;
-              const severity = item?.severity?.toLowerCase() || "moderate";
-              if (severity in vulnerabilities) {
-                vulnerabilities[severity as keyof typeof vulnerabilities]++;
-              } else {
-                vulnerabilities.moderate++;
-              }
-            }
-          }
-        }
-      }
-
-      const output = {
-        package: packageName,
-        version: versionToCheck,
-        vulnerabilities,
-      };
-
-      const formattedText = `Package: ${packageName}@${versionToCheck}\n\nVulnerabilities:\n  Total: ${vulnerabilities.total}\n  Critical: ${vulnerabilities.critical}\n  High: ${vulnerabilities.high}\n  Moderate: ${vulnerabilities.moderate}\n  Low: ${vulnerabilities.low}`;
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: formattedText,
-          },
-        ],
-        structuredContent: output,
-      };
-    } catch (error) {
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Error checking security: ${
-              error instanceof Error ? error.message : "Unknown error"
-            }`,
-          },
-        ],
-        isError: true,
-      };
-    }
-  }
-);
-
 // Tool: Get package quality
 server.registerTool(
   "get_package_quality",
@@ -1092,7 +955,7 @@ server.registerTool(
         );
       }
 
-      const score = parseResult.data.score;
+      const score = parseResult.data;
       const output = {
         name: packageName,
         final: score.final,
@@ -1395,29 +1258,6 @@ server.registerPrompt(
           text: `Find alternative npm packages to "${packageName}"${
             useCase ? ` for use case: ${useCase}` : ""
           }. List the most popular and well-maintained alternatives, compare their features, and explain the pros and cons of each.`,
-        },
-      },
-    ],
-  })
-);
-
-// Prompt: Security review
-server.registerPrompt(
-  "security-review",
-  {
-    title: "Security Review",
-    description: "Security assessment of a package",
-    argsSchema: {
-      packageName: z.string(),
-    },
-  },
-  ({ packageName }) => ({
-    messages: [
-      {
-        role: "user",
-        content: {
-          type: "text",
-          text: `Conduct a security review of the npm package "${packageName}". Assess known vulnerabilities, dependency security, maintenance status, and provide recommendations for safe usage.`,
         },
       },
     ],

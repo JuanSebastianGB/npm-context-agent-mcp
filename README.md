@@ -19,7 +19,6 @@ A Model Context Protocol (MCP) server that provides comprehensive contextual inf
 - **ℹ️ Comprehensive Info** - Get full package metadata including keywords, license, maintainers
 - **🔀 Package Comparison** - Compare two packages side-by-side
 - **📦 Bundle Size** - Get package bundle size information from bundlephobia
-- **🔒 Security Audit** - Check for known security vulnerabilities
 - **⭐ Quality Metrics** - Get quality scores from npms.io
 
 ### MCP Resources
@@ -38,7 +37,6 @@ Ready-to-use prompt templates:
 - **analyze-package** - Comprehensive package analysis prompt
 - **compare-packages** - Compare two packages prompt
 - **find-alternatives** - Find alternative packages prompt
-- **security-review** - Security assessment prompt
 
 ### Transport Support
 
@@ -172,12 +170,6 @@ Get bundle size:
 { "packageName": "lodash", "version": "4.17.21" }
 ```
 
-Check security vulnerabilities:
-
-```json
-{ "packageName": "axios" }
-```
-
 Get quality metrics:
 
 ```json
@@ -230,12 +222,6 @@ Find alternatives:
 { "packageName": "lodash", "useCase": "utility functions" }
 ```
 
-Security review:
-
-```json
-{ "packageName": "axios" }
-```
-
 ### Available Tools
 
 | Tool                       | Description                       | Parameters                     |
@@ -248,7 +234,6 @@ Security review:
 | `get_package_info`         | Get comprehensive package info    | `packageName`, `version?`      |
 | `compare_packages`         | Compare two packages side-by-side | `packageName1`, `packageName2` |
 | `get_package_size`         | Get bundle size information       | `packageName`, `version?`      |
-| `check_security`           | Check security vulnerabilities    | `packageName`, `version?`      |
 | `get_package_quality`      | Get quality metrics from npms.io  | `packageName`                  |
 
 #### `get_readme_data`
@@ -433,28 +418,6 @@ Returns minified size, gzipped size, and dependency count.
 
 ---
 
-#### `check_security`
-
-Check for known security vulnerabilities in a package.
-
-**Parameters:**
-
-- `packageName` (string, required): The name of the npm package
-- `version` (string, optional): Specific version to check (defaults to latest)
-
-**Example:**
-
-```json
-{
-  "packageName": "axios"
-}
-```
-
-**Response:**
-Returns vulnerability count by severity (total, low, moderate, high, critical).
-
----
-
 #### `get_package_quality`
 
 Get quality metrics from npms.io for a package.
@@ -492,7 +455,6 @@ Returns quality score, popularity score, and maintenance score.
 | `analyze-package`   | Comprehensive package analysis    | `packageName`                  |
 | `compare-packages`  | Compare two packages              | `packageName1`, `packageName2` |
 | `find-alternatives` | Find alternative packages         | `packageName`, `useCase?`      |
-| `security-review`   | Security assessment for a package | `packageName`                  |
 
 ---
 
@@ -550,7 +512,6 @@ The server uses the `@modelcontextprotocol/sdk` v1.20.2 to create a standardized
 - **npm Registry API**: `https://registry.npmjs.org/` - Package metadata, versions, dependencies
 - **npm Search API**: `https://registry.npmjs.org/-/v1/search` - Package search functionality
 - **npm Downloads API**: `https://api.npmjs.org/downloads/point/` - Download statistics
-- **npm Security Advisories**: `https://registry.npmjs.org/-/npm/v1/security/advisories/bulk` - Vulnerability checking
 - **GitHub Raw Content**: `https://raw.githubusercontent.com/` - README file fetching
 - **Bundlephobia API**: `https://bundlephobia.com/api/size` - Bundle size information
 - **npms.io API**: `https://api.npms.io/v2/package/` - Quality metrics
@@ -627,12 +588,11 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 **New Features:**
 
 - ✅ MCP Resources support (4 resources)
-- ✅ MCP Prompts support (4 prompts)
+- ✅ MCP Prompts support (3 prompts)
 - ✅ HTTP transport mode
 - ✅ Dual transport mode (stdio + HTTP)
 - ✅ Package comparison tool
 - ✅ Bundle size tool (bundlephobia integration)
-- ✅ Security vulnerability checking
 - ✅ Quality metrics (npms.io integration)
 - ✅ Structured output for all tools
 - ✅ Modern SDK v1.20.2 with registerTool/Resource/Prompt APIs
@@ -643,6 +603,10 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 - ✅ All tools return structured content
 - ✅ Better error handling and type safety
 - ✅ Enhanced documentation
+
+**Note:**
+
+- Removed security checking tool due to unavailable public API for vulnerability data
 
 ### Version 1.0.0
 
