@@ -2,6 +2,10 @@
 
 A Model Context Protocol (MCP) server that provides comprehensive contextual information about npm packages, including README files, versions, dependencies, download statistics, and more.
 
+<a href="https://glama.ai/mcp/servers/@JuanSebastianGB/npm-context-agent-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@JuanSebastianGB/npm-context-agent-mcp/badge" alt="NPM Context Agent MCP server" />
+</a>
+
 ## 🚀 Features
 
 ### Core Capabilities
