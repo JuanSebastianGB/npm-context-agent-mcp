@@ -17,6 +17,34 @@ A Model Context Protocol (MCP) server that provides comprehensive contextual inf
 - **🔗 Dependencies Info** - View dependencies, devDependencies, and peerDependencies
 - **📊 Download Statistics** - Track package download trends (last day, week, or month)
 - **ℹ️ Comprehensive Info** - Get full package metadata including keywords, license, maintainers
+- **🔀 Package Comparison** - Compare two packages side-by-side
+- **📦 Bundle Size** - Get package bundle size information from bundlephobia
+- **🔒 Security Audit** - Check for known security vulnerabilities
+- **⭐ Quality Metrics** - Get quality scores from npms.io
+
+### MCP Resources
+
+Resources provide application-driven data access:
+
+- **package://{packageName}** - Package metadata as JSON resource
+- **package://{packageName}/readme** - README content as markdown resource
+- **package://{packageName}/dependencies** - Dependencies as JSON resource
+- **package://{packageName}/versions** - Version history as JSON resource
+
+### MCP Prompts
+
+Ready-to-use prompt templates:
+
+- **analyze-package** - Comprehensive package analysis prompt
+- **compare-packages** - Compare two packages prompt
+- **find-alternatives** - Find alternative packages prompt
+- **security-review** - Security assessment prompt
+
+### Transport Support
+
+- **stdio Transport** - Traditional stdio-based communication (default)
+- **HTTP Transport** - HTTP-based communication for remote access
+- **Dual Mode** - Support both transports simultaneously
 
 ### Technical Features
 
@@ -25,7 +53,9 @@ A Model Context Protocol (MCP) server that provides comprehensive contextual inf
 - **🎯 Version support** - Fetch specific package versions for all operations
 - **⚡ Smart branch fallback** - Automatically tries main → master → default branches
 - **🔄 Error handling** - Graceful error handling with detailed error messages
-- **🚀 Zero dependencies** - Lightweight implementation using native fetch API
+- **📤 Structured output** - All tools return structured JSON for programmatic access
+- **🎨 Modern MCP SDK** - Uses latest MCP SDK v1.20.2 with resources and prompts
+- **🌐 HTTP & stdio** - Choose your transport mode based on your needs
 
 ## 📋 Requirements
 
@@ -55,6 +85,8 @@ pnpm build
 
 This server implements the Model Context Protocol and can be used with MCP-compatible clients.
 
+#### Stdio Transport (Default)
+
 Add to your MCP configuration:
 
 ```json
@@ -68,48 +100,156 @@ Add to your MCP configuration:
 }
 ```
 
+#### HTTP Transport
+
+To use HTTP transport, set the environment variable before starting:
+
+```bash
+export TRANSPORT_MODE=http
+export PORT=3000  # optional, defaults to 3000
+node build/index.js
+```
+
+Then connect to `http://localhost:3000/mcp` from your MCP client.
+
+#### Dual Mode
+
+To run both stdio and HTTP transports simultaneously:
+
+```bash
+export TRANSPORT_MODE=both
+node build/index.js
+```
+
+**Environment Variables:**
+
+- `TRANSPORT_MODE` - Transport mode: `stdio` (default), `http`, or `both`
+- `PORT` - HTTP server port (default: 3000, only used for http/both modes)
+
 ### Quick Start Examples
 
-**Get README for a package:**
+**Tools:**
+
+Get README for a package:
 
 ```json
 { "packageName": "react" }
 ```
 
-**Search for packages:**
+Search for packages:
 
 ```json
 { "query": "state management", "limit": 5 }
 ```
 
-**Get all versions:**
+Get all versions:
 
 ```json
 { "packageName": "svelte" }
 ```
 
-**Get dependencies:**
+Get dependencies:
 
 ```json
 { "packageName": "@types/node", "version": "24.0.0" }
 ```
 
-**Check download stats:**
+Check download stats:
 
 ```json
 { "packageName": "lodash", "period": "last-week" }
 ```
 
+Compare packages:
+
+```json
+{ "packageName1": "express", "packageName2": "fastify" }
+```
+
+Get bundle size:
+
+```json
+{ "packageName": "lodash", "version": "4.17.21" }
+```
+
+Check security vulnerabilities:
+
+```json
+{ "packageName": "axios" }
+```
+
+Get quality metrics:
+
+```json
+{ "packageName": "react" }
+```
+
+**Resources:**
+
+Read package metadata:
+
+```
+package://react
+```
+
+Read package README:
+
+```
+package://react/readme
+```
+
+Read package dependencies:
+
+```
+package://react/dependencies
+```
+
+Read version history:
+
+```
+package://react/versions
+```
+
+**Prompts:**
+
+Analyze a package:
+
+```json
+{ "packageName": "express" }
+```
+
+Compare two packages:
+
+```json
+{ "packageName1": "vue", "packageName2": "react" }
+```
+
+Find alternatives:
+
+```json
+{ "packageName": "lodash", "useCase": "utility functions" }
+```
+
+Security review:
+
+```json
+{ "packageName": "axios" }
+```
+
 ### Available Tools
 
-| Tool                       | Description                    | Parameters                |
-| -------------------------- | ------------------------------ | ------------------------- |
-| `get_readme_data`          | Get package README from GitHub | `packageName`, `version?` |
-| `search_packages`          | Search npm packages by keyword | `query`, `limit?`         |
-| `get_package_versions`     | Get all versions of a package  | `packageName`             |
-| `get_package_dependencies` | Get package dependencies       | `packageName`, `version?` |
-| `get_download_stats`       | Get download statistics        | `packageName`, `period?`  |
-| `get_package_info`         | Get comprehensive package info | `packageName`, `version?` |
+| Tool                       | Description                       | Parameters                     |
+| -------------------------- | --------------------------------- | ------------------------------ |
+| `get_readme_data`          | Get package README from GitHub    | `packageName`, `version?`      |
+| `search_packages`          | Search npm packages by keyword    | `query`, `limit?`              |
+| `get_package_versions`     | Get all versions of a package     | `packageName`                  |
+| `get_package_dependencies` | Get package dependencies          | `packageName`, `version?`      |
+| `get_download_stats`       | Get download statistics           | `packageName`, `period?`       |
+| `get_package_info`         | Get comprehensive package info    | `packageName`, `version?`      |
+| `compare_packages`         | Compare two packages side-by-side | `packageName1`, `packageName2` |
+| `get_package_size`         | Get bundle size information       | `packageName`, `version?`      |
+| `check_security`           | Check security vulnerabilities    | `packageName`, `version?`      |
+| `get_package_quality`      | Get quality metrics from npms.io  | `packageName`                  |
 
 #### `get_readme_data`
 
@@ -247,6 +387,115 @@ Returns comprehensive package information including keywords, license, maintaine
 
 ---
 
+#### `compare_packages`
+
+Compare two packages side-by-side with detailed metrics.
+
+**Parameters:**
+
+- `packageName1` (string, required): First package to compare
+- `packageName2` (string, required): Second package to compare
+
+**Example:**
+
+```json
+{
+  "packageName1": "express",
+  "packageName2": "fastify"
+}
+```
+
+**Response:**
+Returns side-by-side comparison including versions, descriptions, download statistics, maintainers, and keywords.
+
+---
+
+#### `get_package_size`
+
+Get bundle size information for a package from bundlephobia.
+
+**Parameters:**
+
+- `packageName` (string, required): The name of the npm package
+- `version` (string, optional): Specific version to check (defaults to latest)
+
+**Example:**
+
+```json
+{
+  "packageName": "lodash",
+  "version": "4.17.21"
+}
+```
+
+**Response:**
+Returns minified size, gzipped size, and dependency count.
+
+---
+
+#### `check_security`
+
+Check for known security vulnerabilities in a package.
+
+**Parameters:**
+
+- `packageName` (string, required): The name of the npm package
+- `version` (string, optional): Specific version to check (defaults to latest)
+
+**Example:**
+
+```json
+{
+  "packageName": "axios"
+}
+```
+
+**Response:**
+Returns vulnerability count by severity (total, low, moderate, high, critical).
+
+---
+
+#### `get_package_quality`
+
+Get quality metrics from npms.io for a package.
+
+**Parameters:**
+
+- `packageName` (string, required): The name of the npm package
+
+**Example:**
+
+```json
+{
+  "packageName": "react"
+}
+```
+
+**Response:**
+Returns quality score, popularity score, and maintenance score.
+
+---
+
+### Available Resources
+
+| Resource                               | Description             | MIME Type          |
+| -------------------------------------- | ----------------------- | ------------------ |
+| `package://{packageName}`              | Package metadata        | `application/json` |
+| `package://{packageName}/readme`       | Package README content  | `text/markdown`    |
+| `package://{packageName}/dependencies` | Package dependencies    | `application/json` |
+| `package://{packageName}/versions`     | Package version history | `application/json` |
+
+### Available Prompts
+
+| Prompt              | Description                       | Arguments                      |
+| ------------------- | --------------------------------- | ------------------------------ |
+| `analyze-package`   | Comprehensive package analysis    | `packageName`                  |
+| `compare-packages`  | Compare two packages              | `packageName1`, `packageName2` |
+| `find-alternatives` | Find alternative packages         | `packageName`, `useCase?`      |
+| `security-review`   | Security assessment for a package | `packageName`                  |
+
+---
+
 ## 🏗️ Development
 
 ### Project Structure
@@ -286,43 +535,48 @@ This runs the MCP inspector which allows you to test the server interactively.
 
 ### MCP Server Implementation
 
-The server uses the `@modelcontextprotocol/sdk` to create a standardized MCP server that:
+The server uses the `@modelcontextprotocol/sdk` v1.20.2 to create a standardized MCP server that:
 
-1. Fetches package metadata from the npm registry API
-2. Validates the response structure using Zod schemas
+1. Fetches package metadata from various npm APIs
+2. Validates all responses using Zod schemas
 3. For README fetching: Extracts the GitHub repository URL and fetches README with branch fallback
-4. Returns formatted, structured data
+4. Returns formatted, structured data with both text and JSON output
+5. Supports Resources for application-driven data access
+6. Supports Prompts for reusable analysis templates
+7. Provides multiple transport options (stdio, HTTP, or both)
 
 ### API Endpoints Used
 
 - **npm Registry API**: `https://registry.npmjs.org/` - Package metadata, versions, dependencies
 - **npm Search API**: `https://registry.npmjs.org/-/v1/search` - Package search functionality
 - **npm Downloads API**: `https://api.npmjs.org/downloads/point/` - Download statistics
+- **npm Security Advisories**: `https://registry.npmjs.org/-/npm/v1/security/advisories/bulk` - Vulnerability checking
 - **GitHub Raw Content**: `https://raw.githubusercontent.com/` - README file fetching
+- **Bundlephobia API**: `https://bundlephobia.com/api/size` - Bundle size information
+- **npms.io API**: `https://api.npms.io/v2/package/` - Quality metrics
 
 ### Data Flow
 
 ```
-Client Request → MCP Server → npm Registry API
+Client Request → MCP Server → Multiple APIs (npm, bundlephobia, npms.io, GitHub)
                                  ↓
                            Validation (Zod)
                                  ↓
-                           GitHub API (for README)
-                                 ↓
-                            Formatted Response
+                           Structured Response (Text + JSON)
 ```
 
 ### Error Handling
 
 The server implements comprehensive error handling:
 
-- HTTP errors from npm registry
+- HTTP errors from all APIs (npm registry, bundlephobia, npms.io, GitHub)
 - Invalid response structures
 - GitHub README fetch failures with branch fallback
-- Network errors
+- Network errors and timeouts
 - Scoped package handling
+- Missing package or version errors
 
-All errors are returned with descriptive messages and proper error flags.
+All errors are returned with descriptive messages and proper error flags in both text and structured formats.
 
 ### README Fetching with Branch Fallback
 
@@ -356,6 +610,7 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 
 - `@modelcontextprotocol/sdk` - MCP SDK for server implementation
 - `zod` - Runtime type validation
+- `express` - HTTP server for HTTP transport mode
 
 ## 🔧 Supported Package Types
 
@@ -365,7 +620,31 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 
 ## 📝 Version History
 
-### Version 1.0.0 (Current)
+### Version 2.0.0 (Current)
+
+**Major Update** - MCP SDK modernization and new features
+
+**New Features:**
+
+- ✅ MCP Resources support (4 resources)
+- ✅ MCP Prompts support (4 prompts)
+- ✅ HTTP transport mode
+- ✅ Dual transport mode (stdio + HTTP)
+- ✅ Package comparison tool
+- ✅ Bundle size tool (bundlephobia integration)
+- ✅ Security vulnerability checking
+- ✅ Quality metrics (npms.io integration)
+- ✅ Structured output for all tools
+- ✅ Modern SDK v1.20.2 with registerTool/Resource/Prompt APIs
+
+**Improvements:**
+
+- ✅ All tools migrated to `registerTool()` API
+- ✅ All tools return structured content
+- ✅ Better error handling and type safety
+- ✅ Enhanced documentation
+
+### Version 1.0.0
 
 **Initial Release** - Complete npm context agent MCP server
 
