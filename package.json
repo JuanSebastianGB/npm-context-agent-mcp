@@ -4,8 +4,8 @@
     "npm-context-agent-mcp": "./build/index.js"
   },
   "name": "npm-context-agent-mcp",
-  "version": "1.0.0",
-  "description": "MCP server for fetching npm package metadata and README files from GitHub",
+  "version": "2.0.0",
+  "description": "MCP server with resources, prompts, and tools for npm package metadata, README files, dependencies, and more",
   "main": "index.js",
   "files": [
     "build"
@@ -28,7 +28,12 @@
     "dependencies",
     "versions",
     "search",
-    "download-stats"
+    "download-stats",
+    "resources",
+    "prompts",
+    "http",
+    "security",
+    "quality"
   ],
   "author": "",
   "license": "ISC",
@@ -40,9 +45,11 @@
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.20.2",
+    "express": "^4.21.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^24.9.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
