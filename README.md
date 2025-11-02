@@ -631,10 +631,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-ISC
+MIT License
+
+Copyright (c) 2025 Juan Sebastian Gonzalez
+
+See [LICENSE.md](LICENSE.md) for full license text.
 
 ## 🙏 Acknowledgments
 
 - Built with [Model Context Protocol](https://modelcontextprotocol.io/)
 - Powered by the npm registry API
 - README content sourced from GitHub
+- Quality metrics provided by [npms.io](https://npms.io/)
+- Bundle size data from [Bundlephobia](https://bundlephobia.com/)

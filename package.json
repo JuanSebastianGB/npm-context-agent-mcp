@@ -32,16 +32,17 @@
     "resources",
     "prompts",
     "http",
-    "security",
-    "quality"
+    "quality",
+    "bundlephobia",
+    "npms"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Juan Sebastian Gonzalez",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/JuanSebastianGB/npm-context-agent-mcp.git"
   },
-  "homepage": "",
+  "homepage": "https://github.com/JuanSebastianGB/npm-context-agent-mcp",
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.20.2",
