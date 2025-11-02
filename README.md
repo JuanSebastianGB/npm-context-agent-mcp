@@ -573,11 +573,13 @@ This ensures type safety and prevents runtime errors from unexpected API respons
 - `zod` - Runtime type validation
 - `express` - HTTP server for HTTP transport mode
 
-## 🔧 Supported Package Types
+## 📦 Supported Package Types
 
-- Regular packages: `lodash`, `express`, `react`
-- Scoped packages: `@types/node`, `@babel/core`, `@angular/core`
-- Specific versions: All endpoints support optional version parameters
+This server can query any npm package. Here are examples:
+
+- **Regular packages**: `lodash`, `express`, `react`
+- **Scoped packages**: `@types/node`, `@babel/core`, `@angular/core`
+- **Specific versions**: All tools support optional version parameters
 
 ## 📝 Version History
 
